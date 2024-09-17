@@ -130,8 +130,6 @@ OPTIONAL_KEYS = frozenset({
 ALL_KEYS = REQUIRED_KEYS.union(OPTIONAL_KEYS)
 
 IMAGES_WITHOUT_BANDS = frozenset({
-    'LANDSAT/LC8_L1T_ANNUAL_GREENEST_TOA',
-    'LANDSAT/LE7_L1T_ANNUAL_GREENEST_TOA',
     'MODIS/MCD43A1',
     'MODIS/MCD43A2',
     'MODIS/MCD43A4',
@@ -158,13 +156,6 @@ GSD_EXCEPTIONS = frozenset({
     'LANDSAT/LT04/C02/T1_TOA',
     'LANDSAT/LT04/C02/T2',
     'LANDSAT/LT04/C02/T2_TOA',
-    'LANDSAT/LT05/C01/T1_32DAY_RAW',
-    'LANDSAT/LT05/C01/T1_32DAY_TOA',
-    'LANDSAT/LT05/C01/T1_8DAY_RAW',
-    'LANDSAT/LT05/C01/T1_8DAY_TOA',
-    'LANDSAT/LT05/C01/T1_ANNUAL_GREENEST_TOA',
-    'LANDSAT/LT05/C01/T1_ANNUAL_RAW',
-    'LANDSAT/LT05/C01/T1_ANNUAL_TOA',
     'LANDSAT/LT05/C02/T1',
     'LANDSAT/LT05/C02/T1_TOA',
     'LANDSAT/LT05/C02/T2',
@@ -173,7 +164,7 @@ GSD_EXCEPTIONS = frozenset({
 
 MIN_DESCRIPTION_LEN = 3
 MAX_DESCRIPTION_LEN = 1600
-MAX_BANDS = 500
+MAX_BANDS = 2000
 MAX_GSD = 3e5
 POLARIZATIONS = frozenset({'HH', 'HV', 'VH', 'VV'})
 
@@ -183,6 +174,7 @@ UNITS = units.UNITS.union({
     '% (kg / kg)',
     '(kg/m^3)/(m/s)',
     '1.0e15 molec cm-2',
+    'AU',
     'Coefficient of Variation',
     'Equivalent gauges per 2.5 degree box',
     'J/m^2/day',
@@ -195,10 +187,13 @@ UNITS = units.UNITS.union({
     'Pa/s',
     'Quality Flag',
     'Reflectance factor',
+    'Spectral reflectance',
+    'Standard deviation',
     'W m^-2 sr^-1 &micro;m^-1',
     'W/(m^2*sr*um)/ DN',
     'W/m^2 SR&mu;m',
     'cmol(+)/kg',
+    'g/cm^2',
     'g/cm^3',
     'g/kg',  # per mille
     'g/m^2',
@@ -213,8 +208,11 @@ UNITS = units.UNITS.union({
     'kg/m^2/8day',
     'm of water equivalent',
     'mW cm-2 &mu;m-1 sr-1',
+    'nanoWatts/sr/cm^2/nm',
+    'm^2',
     'm^2 s-2',
     'm^2/m^3',
+    'm^3',
     'meq/100g',
     'meter/year',
     'min. into half hour',
@@ -227,6 +225,7 @@ UNITS = units.UNITS.union({
     'ms',
     'occurrence',
     'ppm',
+    'ppm m',
     'seconds',
     'sr-1',
     'ug m-3',

@@ -1,16 +1,18 @@
 local id = 'NASA/ORNL/DAYMET_V4';
+local versions = import 'versions.libsonnet';
+local version_table = import 'templates/DAYMET_versions.libsonnet';
+
 local subdir = 'NASA';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
 local spdx = import 'spdx.libsonnet';
+local version_config = versions(subdir, version_table, id);
+local version = version_config.version;
+
 local units = import 'units.libsonnet';
 
 local license = spdx.proprietary;
-
-local basename = std.strReplace(id, '/', '_');
-local base_filename = basename + '.json';
-local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
   stac_version: ee_const.stac_version,
@@ -22,7 +24,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   ],
   id: id,
   title: 'Daymet V4: Daily Surface Weather and Climatological Summaries',
-  version: 'V4',
+  version: version,
   'gee:type': ee_const.gee_type.image_collection,
   description: |||
     Daymet V4 provides gridded estimates of daily weather parameters for
@@ -48,7 +50,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
     * [Dataset Documentation](https://daac.ornl.gov/daacdata/daymet/Daymet_Daily_V4/comp/Daymet_Daily_V4.pdf)
 
-    * [The THREDDS location for this Collection](https://thredds.daac.ornl.gov/thredds/catalog/ornldaac/1840/catalog.html)
+    * [The THREDDS location for this Collection](https://thredds.daac.ornl.gov/thredds/catalogs/ornldaac/Regional_and_Global_Data/DAYMET_COLLECTIONS/DAYMET_COLLECTIONS.html)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id) + [
@@ -56,7 +58,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       rel: ee_const.rel.cite_as,
       href: 'https://doi.org/10.3334/ORNLDAAC/1840',
     },
-  ],
+  ] + version_config.version_links,
   keywords: [
     'climate',
     'daily',
@@ -76,7 +78,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   ],
   providers: [
     ee.producer_provider('NASA ORNL DAAC at Oak Ridge National Laboratory', 'https://doi.org/10.3334/ORNLDAAC/1840'),
-    ee.host_provider(self_ee_catalog_url),
+    ee.host_provider(version_config.ee_catalog_url),
   ],
   'gee:provider_ids': [
     'C2031536952-ORNL_CLOUD',
@@ -218,7 +220,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   'gee:terms_of_use': |||
     This dataset is in the public domain and is available
     without restriction on use and distribution. See [NASA's
-    Earth Science Data & Information Policy](https://science.nasa.gov/earth-science/earth-science-data/data-information-policy)
+    Earth Science Data & Information Policy](https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-and-information-policy)
     for additional information.
   |||,
 }

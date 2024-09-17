@@ -26,8 +26,8 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     10 cm in the plains and the main alpine valleys and 25 cm in the Alps. It
     is updated annually.
 
-    For more information, please see the [SWISSIMAGE10cm_FR documentation]
-    (https://www.swisstopo.admin.ch/content/swisstopo-internet/fr/geodata/images/ortho/swissimage10/_jcr_content/contentPar/tabs_copy_copy/items/60_1569482292365/tabPar/downloadlist/downloadItems/67_1588752711524.download/Produktinfo_SWISSIMAGE10cm_FR.pdf)
+    For more information, please see the
+    [SWISSIMAGE10cm_FR documentation](https://backend.swisstopo.admin.ch/fileservice/sdweb-docs-prod-swisstopoch-files/files/2023/11/14/a84642dc-5feb-48e5-af6b-55df4ae7a10b.pdf)
 
     This RGB collection contains digital aerial images with three bands.
     Standard deviation for the precision in position: +/- 0.15 m for the ground
@@ -95,6 +95,6 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
     A reference to the source is mandatory.
     please see the [Terms of use](
-    https://www.swisstopo.admin.ch/en/home/meta/conditions/geodata/ogd.html)
+    https://www.swisstopo.admin.ch/en/terms-and-conditions)
   |||,
 }

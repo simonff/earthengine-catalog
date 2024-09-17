@@ -1,11 +1,16 @@
 local id = 'USGS/NLCD_RELEASES/2019_REL/RCMAP/V5/TRENDS_YEAR';
+local versions = import 'versions.libsonnet';
+local version_table = import 'USGS_NLCD_RCMAP_Trends_year_versions.libsonnet';
+
 local subdir = 'USGS';
+local version_config = versions(subdir, version_table, id);
+local version = version_config.version;
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
 local spdx = import 'spdx.libsonnet';
 local units = import 'units.libsonnet';
-local utils = import 'templates/RCMAP_rangeland_trends.libsonnet';
+local utils = import 'templates/RCMAP_rangeland_trends_V5.libsonnet';
 
 local license = spdx.cc0_1_0;
 
@@ -23,16 +28,14 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ee_const.ext_ver,
   ],
   id: id,
-  title: 'RCMAP Rangeland Trends Year for Component Timeseries V5 (1985-2021)',
-  version: 'V5',
+  title: 'RCMAP Rangeland Trends Year for Component Timeseries (1985-2021), ' + version + ' [deprecated]',
+  version: version,
+  'gee:status': 'deprecated',
   'gee:type': ee_const.gee_type.image_collection,
-  description: |||
-    This collection includes RCMAP yearly products from 1985 through 2021.
-
-  ||| + utils.description,
+  description: 'This collection includes RCMAP yearly products from 1985 through 2021. ' + utils.description,
   'sci:publications': utils.publication,
   license: license.id,
-  links: ee.standardLinks(subdir, id),
+  links: ee.standardLinks(subdir, id) + version_config.version_links,
   keywords: [
     'climate_change',
     'disturbance',
@@ -48,6 +51,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       'https://www.mrlc.gov/'
     ),
     ee.host_provider(self_ee_catalog_url),
+    ee.host_provider(version_config.ee_catalog_url),
   ],
   extent: ee.extent(
     -125.068,
@@ -195,7 +199,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
               '012f8a',
               '012d85',
               '012c82',
-              '01297a',
+              '01297a'
             ],
             bands: [
               'annual_herbaceous_segment_pvalue',
@@ -338,7 +342,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       minimum: -99999,
       maximum: 99999,
       'gee:estimated_range': false,
-    },
+    }
   },
   'sci:citation': utils.citation,
   'gee:terms_of_use': utils.terms_of_use,

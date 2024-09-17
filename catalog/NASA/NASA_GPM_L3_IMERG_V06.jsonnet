@@ -1,6 +1,7 @@
 local id = 'NASA/GPM_L3/IMERG_V06';
+local versions = import 'versions.libsonnet';
+local version_table = import 'templates/IMERG_HHR_versions.libsonnet';
 local subdir = 'NASA';
-local version = '6';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
@@ -13,6 +14,9 @@ local basename = std.strReplace(id, '/', '_');
 local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
+local version_config = versions(subdir, version_table, id);
+local version = version_config.version;
+
 {
   stac_version: ee_const.stac_version,
   type: ee_const.stac_type.collection,
@@ -22,7 +26,9 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ee_const.ext_ver,
   ],
   id: id,
-  title: 'GPM: Global Precipitation Measurement (GPM) v' + version,
+  title: 'GPM: Global Precipitation Measurement (GPM) ' + version +
+  ' [deprecated]',
+  'gee:status': 'deprecated',
   version: version,
   'gee:type': ee_const.gee_type.image_collection,
   description: |||
@@ -45,6 +51,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     for more details on the algorithm.
 
     Documentation:
+
     * [Algorithm Theoretical Basis Document](https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERG_ATBD_V06.pdf)
 
     * [IMERG Quality Index](https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_QI.pdf)
@@ -57,7 +64,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
     * [Remote-Sensing Reflectance](https://gpm1.gesdisc.eosdis.nasa.gov/data/doc/README.GPM.pdf)
 
-    * [Anomalies](ftp://gpmweb2.pps.eosdis.nasa.gov/tsdis/AB/docs/gpm_anomalous.html)
+    * [Anomalies](https://gpmweb2https.pps.eosdis.nasa.gov/tsdis/AB/docs/gpm_anomalous.html)
 
     This collection contains provisional
     products that are regularly replaced with updated versions when
@@ -90,7 +97,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       rel: ee_const.rel.cite_as,
       href: 'https://doi.org/10.5067/GPM/IMERG/3B-HH/06',
     },
-  ],
+  ] + version_config.version_links,
   keywords: [
     'climate',
     'geophysical',

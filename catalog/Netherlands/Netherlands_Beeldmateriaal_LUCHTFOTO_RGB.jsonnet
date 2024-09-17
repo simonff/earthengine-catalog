@@ -28,15 +28,15 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     resolution in the spring and one with leaves on trees at 25 cm resolution
     in the summer.
 
-    For more information, please see the [Netherlands orthophotos documentation]
-    (https://opendata.beeldmateriaal.nl/)
+    For more information, please see the
+    [Netherlands orthophotos documentation](https://opendata.beeldmateriaal.nl/)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id),
   keywords: [
     'orthophoto',
     'rgb',
-    // 'netherlands'
+    'netherlands'
   ],
   providers: [
     ee.producer_provider(
@@ -47,7 +47,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   extent: ee.extent(50.75, 3.2, 53.7, 7.22,
                     '2021-01-01T00:00:00Z', '2022-12-31T00:00:00Z'),
   summaries: {
-    gsd: [0.25],
+    gsd: [0.08],
     'eo:bands': [
       {name: 'R', description: 'Red', 'gee:units': units.dn},
       {name: 'G', description: 'Green', 'gee:units': units.dn},

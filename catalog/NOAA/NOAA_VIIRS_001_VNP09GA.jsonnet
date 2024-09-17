@@ -1,4 +1,7 @@
 local id = 'NOAA/VIIRS/001/VNP09GA';
+local successor_id = 'NASA/VIIRS/002/VNP09GA';
+local latest_id = successor_id;
+local version = 'v001';
 local subdir = 'NOAA';
 
 local ee_const = import 'earthengine_const.libsonnet';
@@ -9,8 +12,11 @@ local units = import 'units.libsonnet';
 local license = spdx.proprietary;
 
 local basename = std.strReplace(id, '/', '_');
+local successor_basename = std.strReplace(successor_id, '/', '_');
+local latest_basename = std.strReplace(latest_id, '/', '_');
 local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
+local catalog_subdir_url = ee_const.catalog_base + subdir + '/';
 
 {
   stac_version: ee_const.stac_version,
@@ -21,8 +27,9 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     ee_const.ext_ver,
   ],
   id: id,
-  title: 'VNP09GA: VIIRS Surface Reflectance Daily 500m and 1km',
-  version: 'V001',
+  title: 'VNP09GA: VIIRS Surface Reflectance Daily 500m and 1km [deprecated]',
+  'gee:status': 'deprecated',
+  version: version,
   'gee:type': ee_const.gee_type.image_collection,
   description: |||
     The Visible Infrared Imaging Radiometer Suite (VIIRS) daily surface
@@ -42,7 +49,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     of the highest-quality observations is included.
 
     For additional information, visit the VIIRS [Land Product Quality
-    Assessment website](https://landweb.modaps.eosdis.nasa.gov/NPP_QA/) and see
+    Assessment website](https://landweb.modaps.eosdis.nasa.gov/browse?sensor=VIIRS&sat=SNPP) and see
     the [User Guide](https://lpdaac.usgs.gov/documents/124/VNP09_User_Guide_V1.6.pdf).
 
     Documentation:
@@ -57,6 +64,12 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
       rel: ee_const.rel.cite_as,
       href: 'https://doi.org/10.5067/VIIRS/VNP09GA.001',
     },
+    ee.link.latest(
+        latest_id,
+        ee_const.catalog_base + 'NASA/' + latest_basename + '.json'),
+    ee.link.successor(
+      successor_id,
+      ee_const.catalog_base + 'NASA/' + successor_basename + '.json'),
   ],
   keywords: [
     'daily',

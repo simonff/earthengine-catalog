@@ -12,7 +12,6 @@ local base_filename = basename + '.json';
 local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
- 'gee:skip_indexing': true,
   stac_version: ee_const.stac_version,
   type: ee_const.stac_type.collection,
   stac_extensions: [
@@ -23,21 +22,14 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   id: id,
   title: 'GPWv411: Water Mask (Gridded Population of the World Version 4.11)',
   version: 'v4.11',
-  'gee:type': ee_const.gee_type.image,
+  'gee:type': ee_const.gee_type.image_collection,
   description: |||
-    The Gridded Population of World Version 4 (GPWv4), Revision 11 models the distribution
-    of global human population for the years 2000, 2005, 2010, 2015, and 2020
-    on 30 arc-second (approximately 1km) grid cells. Population is distributed
-    to cells using proportional allocation of population from census and
-    administrative units. Population input data are collected at the most
-    detailed spatial resolution available from the results of the 2010 round of
-    censuses, which occurred between 2005 and 2014. The input data are
-    extrapolated to produce population estimates for each modeled year.
-
-    Identifies water pixels; non-water pixels are masked
+    This dataset identifies water pixels; non-water pixels are masked.
+    The water mask was used to exclude areas of water and permanent ice
+    from the population allocation.
 
     [General Documentation](https://sedac.ciesin.columbia.edu/data/set/gpw-v4-basic-demographic-characteristics-rev11/docs)
-  |||,
+  ||| + importstr 'GPWv411.md',
   license: license.id,
   links: ee.standardLinks(subdir, id) + [
     ee.link.license(license.reference),
@@ -72,7 +64,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
           bitmask_parts: [
             {
               description: 'Identifies water pixels; non-water pixels are masked',
-              bit_count: 1,
+              bit_count: 2,
               values: [
                 {
                   description: 'Total water pixels that are completely water and/or permanent ice.',
@@ -82,11 +74,19 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
                   value: 1,
                   description: 'Partial water pixels that also contain land.',
                 },
+                {
+                  description: 'Total land pixels.',
+                  value: 2,
+                },
+                {
+                  value: 3,
+                  description: 'Ocean pixels.',
+                },
               ],
               first_bit: 0,
             },
           ],
-          total_bit_count: 1,
+          total_bit_count: 2,
         },
       },
     ],

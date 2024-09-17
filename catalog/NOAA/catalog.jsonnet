@@ -28,6 +28,7 @@ local gsm_description = importstr 'general_satellite_messages_description.md';
 
     ee.link.child_collection('NOAA_CDR_ATMOS_NEAR_SURFACE_V2', base_url),
     ee.link.child_collection('NOAA_CDR_AVHRR_AOT_V3', base_url),
+    ee.link.child_collection('NOAA_CDR_AVHRR_AOT_V4', base_url),
     ee.link.child_collection('NOAA_CDR_AVHRR_LAI_FAPAR_V4', base_url),
     ee.link.child_collection('NOAA_CDR_AVHRR_LAI_FAPAR_V5', base_url),
     ee.link.child_collection('NOAA_CDR_AVHRR_NDVI_V4', base_url),
@@ -64,6 +65,7 @@ local gsm_description = importstr 'general_satellite_messages_description.md';
     ee.link.child_collection('NOAA_GOES_18_MCMIPC', base_url),
     ee.link.child_collection('NOAA_GOES_18_MCMIPF', base_url),
     ee.link.child_collection('NOAA_GOES_18_MCMIPM', base_url),
+    ee.link.child_collection('NOAA_IBTrACS_v4', base_url),
 
     ee.link.child_collection(
       'NOAA_NCEP_DOE_RE2_total_cloud_coverage', base_url),
@@ -87,6 +89,7 @@ local gsm_description = importstr 'general_satellite_messages_description.md';
     ee.link.child_collection('NOAA_VIIRS_001_VNP46A2', base_url),
     ee.link.child_collection('NOAA_VIIRS_001_VNP64A1', base_url),
     ee.link.child_collection('NOAA_VIIRS_DNB_ANNUAL_V21', base_url),
+    ee.link.child_collection('NOAA_VIIRS_DNB_ANNUAL_V22', base_url),
     ee.link.child_collection('NOAA_VIIRS_DNB_MONTHLY_V1_VCMCFG', base_url),
     ee.link.child_collection('NOAA_VIIRS_DNB_MONTHLY_V1_VCMSLCFG', base_url),
   ],

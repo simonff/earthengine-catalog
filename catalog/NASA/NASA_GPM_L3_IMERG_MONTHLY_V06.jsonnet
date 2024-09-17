@@ -48,6 +48,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     for more details on the algorithm.
 
     Documentation:
+
     * [Algorithm Theoretical Basis Document](https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERG_ATBD_V06.pdf)
 
     * [IMERG Quality Index](https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/IMERGV06_QI.pdf)
@@ -58,9 +59,9 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
     * [Release notes; New Morphing algorithm](https://docserver.gesdisc.eosdis.nasa.gov/public/project/GPM/MorphingInV06IMERG.pdf)
 
-    * [Remote-Sensing Reflectance](https://gpm1.gesdisc.eosdis.nasa.gov/data/doc/README.GPM.pdf)
+    * [Remote-Sensing Reflectance](https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/doc/README.GPM.pdf)
 
-    * [Anomalies](ftp://gpmweb2.pps.eosdis.nasa.gov/tsdis/AB/docs/gpm_anomalous.html)
+    * [Anomalies](https://gpmweb2https.pps.eosdis.nasa.gov/tsdis/AB/docs/gpm_anomalous.html)
 
     This collection contains data from
     [GPM_3IMERGM_06](https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGM_V06/summary)

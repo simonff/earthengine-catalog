@@ -1,15 +1,16 @@
 local id = 'USGS/GFSAD1000_V1';
+local versions = import 'versions.libsonnet';
+local version_table = import 'templates/GFSAD1000_versions.libsonnet';
+
 local subdir = 'USGS';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
 local spdx = import 'spdx.libsonnet';
+local version_config = versions(subdir, version_table, id);
+local version = version_config.version;
 
 local license = spdx.proprietary;
-
-local basename = std.strReplace(id, '/', '_');
-local base_filename = basename + '.json';
-local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 {
   stac_version: ee_const.stac_version,
@@ -21,7 +22,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   ],
   id: id,
   title: 'GFSAD1000: Cropland Extent 1km Multi-Study Crop Mask, Global Food-Support Analysis Data',
-  version: 'V1',
+  version: version,
   'gee:type': ee_const.gee_type.image,
   description: |||
     The GFSAD is a NASA-funded project to provide high-resolution global
@@ -42,18 +43,16 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     2010 product was created with data from 2007 to 2012.
   |||,
   license: license.id,
-  links: ee.standardLinks(subdir, id) + [
-  ],
+  links: ee.standardLinks(subdir, id) + version_config.version_links,
   keywords: [
     'crop',
-    'cropland',
     'gfsad',
     'landcover',
     'usgs',
   ],
   providers: [
     ee.producer_provider('Global Food Security-support Analysis Data at 30m Project (GFSAD30)', 'https://geography.wr.usgs.gov/science/croplands/'),
-    ee.host_provider(self_ee_catalog_url),
+    ee.host_provider(version_config.ee_catalog_url),
   ],
   extent: ee.extent_global('2010-01-01T00:00:00Z', '2010-01-01T00:00:00Z'),
   summaries: {
@@ -142,13 +141,13 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     derived from Remote Sensing in Support of Food Security in the Twenty-first
     Century: Current Achievements and Future Possibilities. Chapter 7, Vol. II.
     Land Resources: Monitoring, Modelling, and Mapping, Remote Sensing Handbook
-    edited by Prasad S. Thenkabail. In Press.]
-    (https://lpdaac.usgs.gov/documents/173/GFSAD1K_ATBD.pdf)
+    edited by Prasad S. Thenkabail. In Press.](https://lpdaac.usgs.gov/documents/173/GFSAD1K_ATBD.pdf)
   |||,
   'gee:terms_of_use': |||
     Most U.S. Geological Survey (USGS) information resides
     in the public domain and may be used without restriction. Additional
     information on [Acknowledging or Crediting USGS as Information
-    Source](https://www2.usgs.gov/visual-id/credit_usgs.html) is available.
+    Source](https://www.usgs.gov/information-policies-and-instructions/acknowledging-or-crediting-usgs)
+    is available.
   |||,
 }

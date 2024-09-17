@@ -7,11 +7,13 @@ import dataclasses
 import enum
 import json
 import pathlib
+import sys
 from typing import Iterator, Optional
 
 import os
 
 GEE_TYPE = 'gee:type'
+GEE_STATUS = 'gee:status'
 TYPE = 'type'
 # This is an intentionally invalid dataset_id.
 UNKNOWN_ID = '> UNKNOWN ID: '
@@ -28,18 +30,37 @@ CHECKER_CODE_ROOT = 'https://github.com/google/earthengine-catalog/blob/main'
 FIRMS = 'FIRMS'
 
 
-class StacType(str, enum.Enum):
+_StrEnum = (
+    (enum.StrEnum,) if sys.version_info[:2] >= (3, 11) else (str, enum.Enum)
+)
+
+
+class StacType(*_StrEnum):
   CATALOG = 'Catalog'
   COLLECTION = 'Collection'
 
 
-class GeeType(str, enum.Enum):
+class GeeType(*_StrEnum):
   IMAGE = 'image'
   IMAGE_COLLECTION = 'image_collection'
   TABLE = 'table'
   TABLE_COLLECTION = 'table_collection'
   # For catalogs
   NONE = 'none'
+
+  @classmethod
+  def allowed_collection_types(cls):
+    return frozenset(x.value for x in cls if x != cls.NONE)
+
+
+class Status(*_StrEnum):
+  BETA = 'beta'
+  DEPRECATED = 'deprecated'
+  INCOMPLETE = 'incomplete'
+
+  @classmethod
+  def allowed_statuses(cls):
+    return frozenset(x.value for x in cls)
 
 
 def data_root() -> pathlib.Path:
@@ -86,7 +107,7 @@ class Node:
   stac: dict[str, object]  # The result of json.load
 
 
-class IssueLevel(str, enum.Enum):
+class IssueLevel(*_StrEnum):
   """How serious is an issue."""
   WARNING = 'warning'
   ERROR = 'error'

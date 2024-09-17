@@ -235,6 +235,11 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
         type: ee_const.var_type.string,
       },
       {
+        name: 'platformHeading',
+        description: 'Platform heading relative to North, degrees',
+        type: ee_const.var_type.double,
+      },
+      {
         name: 'instrument',
         description: 'Information related to the instrument on the platform to which acquired the data.',
         type: ee_const.var_type.string,
@@ -499,7 +504,8 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   'gee:interval': {
     type: 'revisit_interval',
     unit: 'day',
-    interval: 3,
+    // 6 days in the best case when two S1 satellites are up.
+    interval: 6,
   },
   'gee:terms_of_use': |||
     The use of Sentinel data is governed by the [Copernicus

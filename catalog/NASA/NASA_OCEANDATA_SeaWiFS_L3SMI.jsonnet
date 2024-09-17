@@ -41,24 +41,22 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
     * [Chlorophyll Forum](https://oceancolor.gsfc.nasa.gov/forum/oceancolor/forum_show.pl)
 
-    * [Algorithm Theoretical Basis Document (Chlorophyll)](https://oceancolor.gsfc.nasa.gov/atbd/chlor_a)
+    * [Algorithm Theoretical Basis Document (Chlorophyll)](https://oceancolor.gsfc.nasa.gov/resources/atbd/chlor_a)
 
-    * [Algorithm Theoretical Basis Document (Fluorescence Line Height)](https://oceancolor.gsfc.nasa.gov/atbd/nflh)
+    * [Algorithm Theoretical Basis Document (Fluorescence Line Height)](https://oceancolor.gsfc.nasa.gov/resources/atbd/nflh)
 
-    * [Algorithm Theoretical Basis Document (Particulate Organic Carbon)](https://oceancolor.gsfc.nasa.gov/atbd/poc)
+    * [Algorithm Theoretical Basis Document (Particulate Organic Carbon)](https://oceancolor.gsfc.nasa.gov/resources/atbd/poc)
 
-    * [Algorithm Theoretical Basis Document (Remote-Sensing Reflectance)](https://oceancolor.gsfc.nasa.gov/atbd/rrs)
+    * [Algorithm Theoretical Basis Document (Remote-Sensing Reflectance)](https://oceancolor.gsfc.nasa.gov/resources/atbd/rrs)
 
-    * [Processing History](https://oceancolor.gsfc.nasa.gov/reprocessing)
+    * [Processing History](https://oceancolor.gsfc.nasa.gov/data/reprocessing)
 
     - There are number of missing data dates in this dataset. For example,
       most dates are missing between 2009-04-29 and 2009-12-01.
 
     - The estimated values for POC might be a result of the data being generated
       without a scale. For more information, visit the
-      [Ocean Color Forum](https://oceancolor.gsfc.nasa.gov/forum/oceancolor/topic_show.pl?pid=33202;hl=poc%20values).
-
-      [SeaWiFS OceanData](https://oceancolor.gsfc.nasa.gov/data/seawifs)
+      [SeaWiFS OceanData](https://oceancolor.gsfc.nasa.gov/about/missions/seawifs)
   |||,
   license: license.id,
   links: ee.standardLinks(subdir, id) + [
@@ -373,7 +371,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
     This dataset is in the public domain and is available
     without restriction on use and distribution. See [NASA's
     Earth Science Data & Information Policy](
-      https://science.nasa.gov/earth-science/earth-science-data/data-information-policy)
+      https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-and-information-policy)
     for additional information.
   |||,
 }

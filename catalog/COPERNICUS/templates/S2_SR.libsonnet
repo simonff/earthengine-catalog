@@ -6,8 +6,12 @@ local units = import 'units.libsonnet';
 local subdir = 'COPERNICUS';
 local license = spdx.proprietary;
 
+// TODO(b/271332540): After Collection 1 reprocessing, the Feb 2022-Feb 2024
+// gap in QA60/MSK_CLASSI bands will be gone, so we will need to remove
+// the corresponding text below.
+
 {
-  s2_dataset(id)::
+  s2_dataset(id, version, version_config)::
     local basename = std.strReplace(id, '/', '_');
     local base_filename = basename + '.json';
     local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
@@ -20,8 +24,10 @@ local license = spdx.proprietary;
       type: 'Collection',
       stac_extensions: [
         ee_const.ext_eo,
+        ee_const.ext_ver,
       ],
       id: id,
+      version: version,
       title: 'Sentinel-2 MSI: MultiSpectral Instrument, Level-2A',
       'gee:type': ee_const.gee_type.image_collection,
       description: |||
@@ -39,9 +45,14 @@ local license = spdx.proprietary;
         there is no B10). There are also several more L2-specific bands (see band
         list for details). See the
         [Sentinel-2 User Handbook](https://sentinel.esa.int/documents/247904/685211/Sentinel-2_User_Handbook)
-        for details. In addition, three QA bands are present where one
-        (QA60) is a bitmask band with cloud mask information. For more
-        details, [see the full explanation of how cloud masks are computed.](https://sentinel.esa.int/web/sentinel/technical-guides/sentinel-2-msi/level-1c/cloud-masks)
+        for details.
+
+        QA60 is a bitmask band that contained rasterized cloud mask
+        polygons until February 2022, when these polygons stopped being produced.
+        Starting in February 2024, legacy-consistent QA60 bands are constructed from the MSK_CLASSI
+        cloud classification bands.
+        For more details,
+        [see the full explanation of how cloud masks are computed.](https://sentinel.esa.int/web/sentinel/technical-guides/sentinel-2-msi/level-1c/cloud-masks)
 
         EE asset ids for Sentinel-2 L2 assets have the following format:
         COPERNICUS/S2_SR/20151128T002653_20151128T102149_T56MNN. Here the
@@ -50,23 +61,13 @@ local license = spdx.proprietary;
         time, and the final 6-character string is a unique granule identifier
         indicating its UTM grid reference (see [MGRS](https://en.wikipedia.org/wiki/Military_Grid_Reference_System)).
 
-        Clouds can be removed by using
-        [COPERNICUS/S2_CLOUD_PROBABILITY](COPERNICUS_S2_CLOUD_PROBABILITY).
-        See
-        [this tutorial](https://developers.google.com/earth-engine/tutorials/community/sentinel-2-s2cloudless)
-        explaining how to apply the cloud mask.
+        For datasets to assist with cloud and/or cloud shadow detection, see [COPERNICUS/S2_CLOUD_PROBABILITY](COPERNICUS_S2_CLOUD_PROBABILITY)
+        and [GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED](GOOGLE_CLOUD_SCORE_PLUS_V1_S2_HARMONIZED).
 
         For more details on Sentinel-2 radiometric resolution, [see this page](https://sentinel.esa.int/web/sentinel/user-guides/sentinel-2-msi/resolutions/radiometric).
       |||,
       license: license.id,
-      links: [
-        ee.link.self_link(self_url),
-        ee.link.parent(parent_url),
-        ee.link.root(),
-        ee.link.example(id, subdir, basename),
-        ee.link.preview(subdir, basename),
-        ee.link.terms_of_use(self_ee_catalog_url),
-      ],
+      links: ee.standardLinks(subdir, id) + version_config.version_links,
       keywords: [
         'copernicus',
         'esa',
@@ -78,7 +79,7 @@ local license = spdx.proprietary;
       ],
       providers: [
         ee.producer_provider('European Union/ESA/Copernicus', 'https://sentinel.esa.int/web/sentinel/user-guides/sentinel-2-msi/processing-levels/level-2'),
-        ee.host_provider(self_ee_catalog_url),
+        ee.host_provider(version_config.ee_catalog_url),
       ],
       extent: ee.extent(-180.0, -56.0, 180.0, 83.0, '2017-03-28T00:00:00Z', null),
       summaries: {
@@ -702,7 +703,7 @@ local license = spdx.proprietary;
           },
           {
             name: 'QA60',
-            description: 'Cloud mask',
+            description: 'Cloud mask. Masked out between February 2022 and February 2024.',
             gsd: 60.0,
             'gee:bitmask': {
               bitmask_parts: [
@@ -745,6 +746,21 @@ local license = spdx.proprietary;
               total_bit_count: 12,
             },
           },
+          {
+            name: 'MSK_CLASSI_OPAQUE',
+            description: 'Opaque clouds classification band (0=no clouds, 1=clouds). Masked out before February 2024.',
+            gsd: 60.0,
+          },
+          {
+            name: 'MSK_CLASSI_CIRRUS',
+            description: 'Cirrus clouds classification band (0=no clouds, 1=clouds). Masked out before February 2024.',
+            gsd: 60.0,
+          },
+          {
+            name: 'MSK_CLASSI_SNOW_ICE',
+            description: 'Snow/ice classification band (0=no snow/ice, 1=snow/ice). Masked out before February 2024.',
+            gsd: 60.0,
+          }
         ],
         'gee:visualizations': [
           {

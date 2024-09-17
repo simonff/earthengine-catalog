@@ -1,19 +1,15 @@
 local id = 'Oxford/MAP/accessibility_to_cities_2015_v1_0';
-local successor_id = 'Oxford/MAP/accessibility_to_healthcare_2019';
+
 local subdir = 'Oxford';
 
 local ee_const = import 'earthengine_const.libsonnet';
 local ee = import 'earthengine.libsonnet';
 local spdx = import 'spdx.libsonnet';
 local units = import 'units.libsonnet';
+local basename = std.strReplace(id, '/', '_');
+local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
 
 local license = spdx.cc_by_4_0;
-
-local basename = std.strReplace(id, '/', '_');
-local base_filename = basename + '.json';
-local successor_basename = std.strReplace(successor_id, '/', '_');
-local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
-local catalog_subdir_url = ee_const.catalog_base + subdir + '/';
 
 {
   stac_version: ee_const.stac_version,
@@ -21,12 +17,9 @@ local catalog_subdir_url = ee_const.catalog_base + subdir + '/';
   stac_extensions: [
     ee_const.ext_eo,
     ee_const.ext_sci,
-    ee_const.ext_ver,
   ],
   id: id,
-  title: 'Accessibility to Cities 2015 [deprecated]',
-  version: 'v1.0',
-  deprecated: true,
+  title: 'Accessibility to Cities 2015',
   'gee:type': ee_const.gee_type.image,
   description: |||
     This global accessibility map enumerates land-based
@@ -64,10 +57,7 @@ local catalog_subdir_url = ee_const.catalog_base + subdir + '/';
     Source dataset credits are as described in the accompanying paper.
   |||,
   license: license.id,
-  links: ee.standardLinks(subdir, id) + [
-    ee.link.successor(
-        successor_id, catalog_subdir_url + successor_basename + '.json'),
-  ],
+  links: ee.standardLinks(subdir, id),
   keywords: [
     'accessibility',
     'jrc',
