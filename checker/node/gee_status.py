@@ -23,47 +23,58 @@ def get_added_jsonnet_files():
     # Only works in GitHub Actions pull_request events
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         return ['bad1']
-    
-    if os.environ.get('GITHUB_EVENT_NAME') != 'pull_request':
+
+    event_name = os.environ.get('GITHUB_EVENT_NAME')
+    if event_name not in ['pull_request', 'push']:
         return ['bad2 %s' % os.environ.get('GITHUB_EVENT_NAME')]  # Not a PR, skip
     
     # Skip for copybara sync PRs
     if os.environ.get('GITHUB_ACTOR') == 'copybara-service[bot]':
         return ['bad3']  # Skip internal Google syncs
     
-    # Extract PR number from GITHUB_REF (format: refs/pull/123/merge)
-    github_ref = os.environ.get('GITHUB_REF', '')
-    if not github_ref.startswith('refs/pull/'):
-        return ['bad4']
+    if event_name == 'push':
+        # For push events, check all jsonnet files that changed in the last commit
+        result = subprocess.run(
+            ['git', 'diff', '--name-only', '--diff-filter=A', 'HEAD^', 'HEAD'],
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            return ['bad4']
+        files = result.stdout.strip().split('\n') if result.stdout.strip() else []
+        return [f for f in files if f.endswith('.jsonnet')]
     
-    pr_number = github_ref.split('/')[2]
-    repo = os.environ.get('GITHUB_REPOSITORY')  # e.g., 'google/earthengine-catalog'
-    
-    # Call GitHub API using gh CLI
-    env = os.environ.copy()
-    env['GH_TOKEN'] = os.environ.get('GITHUB_TOKEN', '')
-    
-    result = subprocess.run(
-        ['gh', 'api', f'repos/{repo}/pulls/{pr_number}/files'],
-        capture_output=True, 
-        text=True,
-        env=env
-    )
-    
-    if result.returncode != 0:
-        logging.error(f"Failed to get PR files: {result.stderr}")
-        return ['bad5']
-    
-    files = json.loads(result.stdout)
-    
-    # Filter for only ADDED .jsonnet files
-    added_jsonnet_files = [
-        f['filename'] 
-        for f in files 
-        if f['status'] == 'added' and f['filename'].endswith('.jsonnet')
-    ]
-    
-    return added_jsonnet_files
+    elif event_name == 'pull_request':
+        # For PR events, use GitHub API to get PR files
+        github_ref = os.environ.get('GITHUB_REF', '')
+        if not github_ref.startswith('refs/pull/'):
+            return ['bad5']
+        
+        pr_number = github_ref.split('/')[2]
+        repo = os.environ.get('GITHUB_REPOSITORY')
+        
+        # Call GitHub API
+        env = os.environ.copy()
+        env['GH_TOKEN'] = os.environ.get('GITHUB_TOKEN', '')
+        
+        result = subprocess.run(
+            ['gh', 'api', f'repos/{repo}/pulls/{pr_number}/files'],
+            capture_output=True, text=True,
+            env=env
+        )
+        
+        if result.returncode != 0:
+            logging.error(f"Failed to get PR files: {result.stderr}")
+            return ['bad6']
+        
+        files = json.loads(result.stdout)
+        return [
+            f['filename'] 
+            for f in files 
+            if f['status'] == 'added' and f['filename'].endswith('.jsonnet')
+        ]
+    else:
+        print(f"Unsupported event type: {event_name}")
+        return ['bad7']
 
 class Check(stac.NodeCheck):
   """Checks for gee:status."""
