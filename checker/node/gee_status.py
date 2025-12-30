@@ -85,9 +85,7 @@ class Check(stac.NodeCheck):
               f' {sorted(stac.Status.allowed_statuses())}',
           )
         if node.id == 'AAFC/ACI5':
-            yield cls.new_issue(node, 'HIT ACI5')
-        elif node.id.startswith('A'):    
-            yield cls.new_issue(node, 'WHY %s' % node.id)
+            yield cls.new_issue(node, get_added_jsonnet_files())
         if field_value == stac.Status.READY:
             jsonnet_suffix = node.id.replace('/', '_')
             if any(x for x in get_added_jsonnet_files() if x.endswith('/'+jsonnet_suffix)):
