@@ -39,7 +39,7 @@ def get_added_jsonnet_files():
             capture_output=True, text=True
         )
         if result.returncode != 0:
-            return ['bad4']
+            return ['bad4: %s' % result]
         files = result.stdout.strip().split('\n') if result.stdout.strip() else []
         return [f for f in files if f.endswith('.jsonnet')]
     
