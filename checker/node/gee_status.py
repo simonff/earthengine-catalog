@@ -84,12 +84,10 @@ class Check(stac.NodeCheck):
               f'{stac.GEE_STATUS}, if set, must be one of'
               f' {sorted(stac.Status.allowed_statuses())}',
           )
-        jsonnet_suffix = node.id.replace('/', '_')
         if field_value == stac.Status.READY:
             github_added_files = get_added_jsonnet_files()
-            if any(x for x in github_added_files if x.endswith('/'+jsonnet_suffix)):
+            jsonnet_suffix = node.id.replace('/', '_')
+            if any(x for x in github_added_files() if x.endswith('/'+jsonnet_suffix)):
                 yield cls.new_issue(node, 'Do not set status to READY for new datasets, set it to BETA')
             else:
                 yield cls.new_issue(node, 'Error not hit')
-        else:        
-            yield cls.new_issue(node, 'Status not ready')
