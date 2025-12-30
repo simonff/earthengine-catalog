@@ -22,19 +22,19 @@ def get_added_jsonnet_files():
     
     # Only works in GitHub Actions pull_request events
     if os.environ.get('GITHUB_ACTIONS') != 'true':
-        return []
+        return ['bad1']
     
     if os.environ.get('GITHUB_EVENT_NAME') != 'pull_request':
-        return []  # Not a PR, skip
+        return ['bad2']  # Not a PR, skip
     
     # Skip for copybara sync PRs
     if os.environ.get('GITHUB_ACTOR') == 'copybara-service[bot]':
-        return []  # Skip internal Google syncs
+        return ['bad3']  # Skip internal Google syncs
     
     # Extract PR number from GITHUB_REF (format: refs/pull/123/merge)
     github_ref = os.environ.get('GITHUB_REF', '')
     if not github_ref.startswith('refs/pull/'):
-        return []
+        return ['bad4']
     
     pr_number = github_ref.split('/')[2]
     repo = os.environ.get('GITHUB_REPOSITORY')  # e.g., 'google/earthengine-catalog'
@@ -52,7 +52,7 @@ def get_added_jsonnet_files():
     
     if result.returncode != 0:
         logging.error(f"Failed to get PR files: {result.stderr}")
-        return []
+        return ['bad5']
     
     files = json.loads(result.stdout)
     
