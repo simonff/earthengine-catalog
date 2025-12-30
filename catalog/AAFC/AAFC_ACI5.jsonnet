@@ -20,6 +20,7 @@ local self_ee_catalog_url = ee_const.ee_catalog_url + basename;
   id: id,
   title: 'Canada AAFC Annual Crop Inventory',
   'gee:type': ee_const.gee_type.image_collection,
+  'gee:status': 'ready',
   description: |||
     Starting in 2009, the Earth Observation Team of the Science and Technology
     Branch (STB) at Agriculture and Agri-Food Canada (AAFC) began the process
