@@ -84,7 +84,7 @@ class Check(stac.NodeCheck):
               f'{stac.GEE_STATUS}, if set, must be one of'
               f' {sorted(stac.Status.allowed_statuses())}',
           )
-        if node.id == ''AAFC/ACI5'':
+        if node.id == 'AFC/ACI5':
             yield cls.new_issue(node, 'HIT ACI5')
         else:    
             yield cls.new_issue(node, 'WHY %s' % node.id)
