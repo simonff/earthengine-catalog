@@ -87,4 +87,7 @@ class Check(stac.NodeCheck):
         jsonnet_suffix = node.id.replace('/', '_')
         if field_value == stac.Status.READY:
             github_added_files = get_added_jsonnet_files()
-            logging.info('Matching %s vs %s: %s', jsonnet_suffix, github_added_files, any(x for x in github_added_files if x.endswith('/'+jsonnet_suffix)))
+            if any(x for x in github_added_files if x.endswith('/'+jsonnet_suffix)):
+                yield cls.new_issue(node, 'Do not set status to READY for new datasets, set it to BETA')
+            else:
+                yield cls.new_issue(node, 'Error not hit')
