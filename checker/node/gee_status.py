@@ -25,7 +25,7 @@ def get_added_jsonnet_files():
         return ['bad1']
     
     if os.environ.get('GITHUB_EVENT_NAME') != 'pull_request':
-        return ['bad2']  # Not a PR, skip
+        return ['bad2 %s' % os.environ.get('GITHUB_EVENT_NAME')]  # Not a PR, skip
     
     # Skip for copybara sync PRs
     if os.environ.get('GITHUB_ACTOR') == 'copybara-service[bot]':
