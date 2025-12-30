@@ -84,9 +84,9 @@ class Check(stac.NodeCheck):
               f'{stac.GEE_STATUS}, if set, must be one of'
               f' {sorted(stac.Status.allowed_statuses())}',
           )
-        if node.id == 'AFC/ACI5':
+        if node.id == 'AAFC/ACI5':
             yield cls.new_issue(node, 'HIT ACI5')
-        else:    
+        elif node.id.startswith('A'):    
             yield cls.new_issue(node, 'WHY %s' % node.id)
         if field_value == stac.Status.READY:
             github_added_files = get_added_jsonnet_files()
