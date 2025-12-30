@@ -91,3 +91,5 @@ class Check(stac.NodeCheck):
                 yield cls.new_issue(node, 'Do not set status to READY for new datasets, set it to BETA')
             else:
                 yield cls.new_issue(node, 'Error not hit')
+        else:        
+            yield cls.new_issue(node, 'Status not ready')
