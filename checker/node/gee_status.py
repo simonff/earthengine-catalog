@@ -98,8 +98,8 @@ class Check(stac.NodeCheck):
         if node.id == 'AAFC/ACI5':
             yield cls.new_issue(node, get_added_jsonnet_files())
         if field_value == stac.Status.READY:
-            jsonnet_suffix = node.id.replace('/', '_')
-            if any(x for x in get_added_jsonnet_files() if x.endswith('/'+jsonnet_suffix)):
+            jsonnet_basename = node.id.replace('/', '_') + '.jsonnet'
+            if any(x for x in get_added_jsonnet_files() if x.endswith('/'+jsonnet_basename)):
                 yield cls.new_issue(node, 'Do not set status to READY for new datasets, set it to BETA')
             else:
                 yield cls.new_issue(node, 'Error not hit')
