@@ -33,7 +33,7 @@ def get_added_jsonnet_files():
         return ['bad3']  # Skip internal Google syncs
     
     if event_name == 'push':
-       result = subprocess.run(
+        result = subprocess.run(
             ['git', 'show', '--name-only', '--diff-filter=A', '--pretty=format:', 'HEAD'],
             capture_output=True, text=True
         )
