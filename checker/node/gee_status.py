@@ -33,16 +33,16 @@ def get_added_jsonnet_files():
         return ['bad3']  # Skip internal Google syncs
     
     if event_name == 'push':
-        # For push events, check all jsonnet files that changed in the last commit
-        result = subprocess.run(
-            ['git', 'diff', '--name-only', '--diff-filter=A', 'HEAD^', 'HEAD'],
+       result = subprocess.run(
+            ['git', 'show', '--name-only', '--diff-filter=A', '--pretty=format:', 'HEAD'],
             capture_output=True, text=True
         )
+        
         if result.returncode != 0:
-            return ['bad4: %s' % result]
+            return ['bad4 %s' % result]
+        
         files = result.stdout.strip().split('\n') if result.stdout.strip() else []
-        return [f for f in files if f.endswith('.jsonnet')]
-    
+        return [f for f in files if f.endswith('.jsonnet')]    
     elif event_name == 'pull_request':
         # For PR events, use GitHub API to get PR files
         github_ref = os.environ.get('GITHUB_REF', '')
